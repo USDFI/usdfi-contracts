@@ -32,13 +32,13 @@ contract Manager is ContractLogic, Ownable {
         onlyOwner
     {
         referrals = IReferrals(_referralsContract);
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
     // update the lock time
     function setLockTime(uint256 _lockTime) public onlyOwner {
         lockTime = _lockTime;
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
     // update the ref level reward
@@ -46,32 +46,43 @@ contract Manager is ContractLogic, Ownable {
         public
         onlyOwner
     {
+        uint256 i = 0;
+        uint256 requestedRefLevelReward = 0;
+        while (i < _refLevelReward.length) {
+            requestedRefLevelReward = requestedRefLevelReward.add(
+                _refLevelReward[i]
+            );
+            i += 1;
+        }
+        require(requestedRefLevelReward == 100000, "must be 100000 = 100%");
+
         refLevelReward = _refLevelReward;
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
     // update the finish period for rewards
     function setPeriodFinish(uint256 _periodFinish) public onlyOwner {
         periodFinish = _periodFinish;
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
     // update the transfer fee from the reward coin
     function setRewardCoinFee(uint256 _rewardCoinFee) public onlyOwner {
         rewardCoinFee = _rewardCoinFee;
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
-        // update the transfer fee from the reward coin
+    // update the transfer fee from the reward coin
     function setStakingCoinFee(uint256 _stakingCoinFee) public onlyOwner {
         stakingCoinFee = _stakingCoinFee;
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
     // update the free time
     function setFreeTime(uint256 _freeTime) public onlyOwner {
+        require(_freeTime == 600, "must be at least 10 minutes ");
         freeTime = _freeTime;
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
     // update the vault address
@@ -148,7 +159,7 @@ contract Manager is ContractLogic, Ownable {
      */
     function setProxyTrigger(bool _ProxyTrigger) public onlyOwner {
         ProxyTrigger = _ProxyTrigger;
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
     /**
@@ -186,7 +197,7 @@ contract Manager is ContractLogic, Ownable {
     function updateProxyContract(address _ProxyContract) public onlyOwner {
         newProxyContract = _ProxyContract;
         lastProxyTimelockBlock = block.timestamp.add(proxyBlockTimelock);
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
     }
 
     /**
@@ -210,7 +221,7 @@ contract Manager is ContractLogic, Ownable {
         );
         Proxy = IProxy(newProxyContract);
         proxyBlockTimelock = 1 days; //Set the update time back to 1 day in case there is an error and you need to intervene quickly.
-        emergencyTime = block.timestamp.add(emergencyTime);
+        emergencyTime = block.timestamp.add(emergencyTimeframe);
         newProxyContract = 0x0000000000000000000000000000000000000000;
     }
 }
