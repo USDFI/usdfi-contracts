@@ -78,16 +78,12 @@ contract ContractLogic {
             _amount
         );
 
-        address _sponsor1 = referrals.getSponsor(msg.sender);
-        if (_amount >= minReferralAmount) {
-            if (referrals.isMember(msg.sender) == false) {
-                if (referrals.isMember(_sponsor) == true) {
-                    referrals.addMember(msg.sender, _sponsor);
-                    _sponsor1 = _sponsor;
-                } else if (referrals.isMember(_sponsor) == false) {
-                    _sponsor1 = referrals.membersList(0);
-                }
-            }
+        if (
+            _amount >= minReferralAmount &&
+            referrals.isMember(msg.sender) == false &&
+            referrals.isMember(_sponsor) == true
+        ) {
+            referrals.addMember(msg.sender, _sponsor);
         }
     }
 
