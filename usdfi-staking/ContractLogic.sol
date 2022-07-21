@@ -89,14 +89,14 @@ contract ContractLogic {
 
     // withdraw "staking coin" from the pool (when the address is in the withdraw time)
     function withdraw(uint256 _amount) public virtual {
-        _totalSupply = _totalSupply.sub(_amount);
-        balances[msg.sender] = balances[msg.sender].sub(_amount);
         require(
             block.timestamp > requestedWithdrawTime[msg.sender].add(lockTime) &&
                 block.timestamp <
                 requestedWithdrawTime[msg.sender].add(lockTime).add(freeTime),
             "You must wait until the lock ends"
         );
+        _totalSupply = _totalSupply.sub(_amount);
+        balances[msg.sender] = balances[msg.sender].sub(_amount);
         IERC20(stakingCoinAddress).safeTransfer(msg.sender, _amount);
     }
 
