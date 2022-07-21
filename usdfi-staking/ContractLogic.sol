@@ -39,14 +39,15 @@ contract ContractLogic {
     mapping(address => uint256) public rewards; // how much did an address get paid
 
     uint256[] public refLevelReward = [40000, 30000, 10000, 10000, 5000, 5000]; // Allocation of ref fees over the ref level
-    uint256 public minReferralAmount = 990000000000000000 ; // set the min staking amount to set a new referral | 0.99 tokens
+    uint256 public minReferralAmount = 990000000000000000; // set the min staking amount to set a new referral | 0.99 tokens
 
     uint256 public lockTime = 30 days; // how long are the coins locked | 30 days
     uint256 public rewardCoinFee = 10000; // tranfer fee from the reward coin (10000 = 0%)
     uint256 public stakingCoinFee = 10000; // If a coin has a transfer fee, this can be compensated with it. (10000 = 0%)
     uint256 public refRewardFee = 5000; // ref reward from the staking (5000 = 5%)
     uint256 internal normalPercent = 100000 - refRewardFee; // Payout percentage without refs
-    uint256 public emergencyTime = 7 days; // how long you can make a free instant emergency withdrawal
+    uint256 public emergencyTimeframe = 7 days; // how long you can make a free instant emergency withdrawal
+    uint256 public emergencyTime; // how long is the emergency Withdawal
     uint256 public freeTime = 2 days; // how long you have to make a withdrawal after the lock time has expired | 2 days
     uint256 public periodFinish; // when is the drop finished
     uint256 public rewardRate; // how many coins are credited
@@ -67,9 +68,9 @@ contract ContractLogic {
     // stake "staking coin" to the pool
     function stake(uint256 _amount, address _sponsor) public virtual {
         requestedWithdrawTime[msg.sender] = 1;
-        _totalSupply = _totalSupply.add(_amount.div(10000).mul(stakingCoinFee));
+        _totalSupply = _totalSupply.add(_amount.mul(stakingCoinFee).div(10000));
         balances[msg.sender] = balances[msg.sender].add(
-            _amount.div(10000).mul(stakingCoinFee)
+            _amount.mul(stakingCoinFee).div(10000)
         );
         IERC20(stakingCoinAddress).safeTransferFrom(
             msg.sender,
@@ -90,7 +91,7 @@ contract ContractLogic {
         }
     }
 
-    // withdraw "staking coin" from the pool (when the address is in the withdraw time or  accept the penalty fee)
+    // withdraw "staking coin" from the pool (when the address is in the withdraw time)
     function withdraw(uint256 _amount) public virtual {
         _totalSupply = _totalSupply.sub(_amount);
         balances[msg.sender] = balances[msg.sender].sub(_amount);
