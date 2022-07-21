@@ -72,8 +72,8 @@ contract RewardPool is Manager, ReentrancyGuard {
                     .mul(rewardRate)
                     .mul(1e18)
                     .div(totalSupply())
-                    .div(100000)
                     .mul(normalPercent)
+                    .div(100000)
             );
     }
 
@@ -93,8 +93,8 @@ contract RewardPool is Manager, ReentrancyGuard {
                 .mul(rewardPerToken().sub(userRewardPerTokenPaid[_account]))
                 .div(1e18)
                 .add(rewards[_account])
-                .div(100000)
-                .mul(normalPercent);
+                .mul(normalPercent)
+                .div(100000);
     }
 
     // stake visibility is public as overriding LPTokenWrapper's stake() function
@@ -150,9 +150,12 @@ contract RewardPool is Manager, ReentrancyGuard {
         uint256 reward = earned(msg.sender);
         if (reward > 0) {
             rewards[msg.sender] = 0;
-            uint256 refReward = reward.div(100000).mul(refRewardFee);
+            uint256 refReward = reward.mul(refRewardFee).div(100000);
             uint256 remainingRefReward = refReward;
-            IERC20(rewardCoinAddress).safeTransfer(msg.sender, reward.sub(refReward));
+            IERC20(rewardCoinAddress).safeTransfer(
+                msg.sender,
+                reward.sub(refReward)
+            );
             emit RewardPaid(msg.sender, reward);
 
             address sponsor = referrals.getSponsor(msg.sender);
@@ -160,10 +163,15 @@ contract RewardPool is Manager, ReentrancyGuard {
             uint256 i = 0;
 
             while (i < refLevelReward.length && refLevelReward[i] > 0) {
-                if (sponsor != basicSponsor) { 
-                    uint256 refFeeAmount = refReward.mul(refLevelReward[i]).div(100000);
+                if (sponsor != basicSponsor) {
+                    uint256 refFeeAmount = refReward.mul(refLevelReward[i]).div(
+                        100000
+                    );
                     remainingRefReward = remainingRefReward.sub(refFeeAmount);
-                    IERC20(rewardCoinAddress).safeTransfer(sponsor,refFeeAmount);
+                    IERC20(rewardCoinAddress).safeTransfer(
+                        sponsor,
+                        refFeeAmount
+                    );
                     sponsor = referrals.getSponsor(sponsor);
                     i++;
                 } else {
@@ -171,10 +179,13 @@ contract RewardPool is Manager, ReentrancyGuard {
                 }
             }
 
-        if (remainingRefReward > 0) {
-            IERC20(rewardCoinAddress).safeTransfer(sponsor,remainingRefReward);
+            if (remainingRefReward > 0) {
+                IERC20(rewardCoinAddress).safeTransfer(
+                    sponsor,
+                    remainingRefReward
+                );
+            }
         }
-        } 
     }
 
     // add new rewards
@@ -190,7 +201,7 @@ contract RewardPool is Manager, ReentrancyGuard {
                     reward
                 );
 
-                reward = reward.div(10000).mul(rewardCoinFee);
+                reward = reward.mul(rewardCoinFee).div(10000);
                 ReceivedRewardCoins = ReceivedRewardCoins.add(reward);
 
                 if (block.timestamp >= periodFinish) {
