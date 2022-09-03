@@ -119,6 +119,7 @@ contract USDFI_MINTER is Pausable, ReentrancyGuard {
 
     // Set the Address who receives the payment from minting that goes.
     function setReceiverAddress(address _receiverAddress) external onlyOwner {
+        require(_receiverAddress != address(0), "zero address");
         receiverAddress = _receiverAddress;
     }
 
@@ -127,6 +128,7 @@ contract USDFI_MINTER is Pausable, ReentrancyGuard {
         external
         onlyOwner
     {
+        require(_receiverMintFeeAddress != address(0), "zero address");
         receiverMintFeeAddress = _receiverMintFeeAddress;
     }
 
