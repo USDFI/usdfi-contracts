@@ -141,7 +141,7 @@ contract STABLE_MINTER is Pausable, ReentrancyGuard {
 
     // Update the Stability Check Contract.
     function UpdateStableCheckContract(address _stableCheckContract)
-        public
+        external
         onlyOwner
     {
         stabilityCheck = IStabilityCheck(_stableCheckContract);
