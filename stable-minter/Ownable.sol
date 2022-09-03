@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: GNU GPLv2
  *
- * File @openzeppelin/contracts/access/Ownable.sol
+ * File: @openzeppelin/contracts/access/Ownable.sol
  *
  **/
 
@@ -63,7 +63,7 @@ abstract contract Ownable is Context {
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
      * Can only be called by the current owner.
      */
-    function transferOwnership(address newOwner) public virtual onlyOwner {
+    function transferOwnership(address newOwner) external virtual onlyOwner {
         require(
             newOwner != address(0),
             "Ownable: new owner is the zero address"
