@@ -1,6 +1,6 @@
 /**
- * @title Safe Math
- * @dev SafeMath contract
+ * @title ERC20
+ * @dev ERC20 contract
  *
  * @author - <USDFI TRUST>
  * for the USDFI Trust
