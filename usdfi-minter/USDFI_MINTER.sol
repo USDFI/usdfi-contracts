@@ -28,9 +28,9 @@ contract USDFI_MINTER is Pausable, ReentrancyGuard {
         0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56
     ]; // STABLE => COIN
 
-    address internal mintToken = 0x7DF1938170869AFE410098540c051A8A50308988; // USDFI
+    address public constant mintToken = 0x7DF1938170869AFE410098540c051A8A50308988; // USDFI
 
-    address public unirouter = 0x10ED43C718714eb63d5aA57B78B54704E256024E; // USDFI SWAP
+    address public constant unirouter = 0x10ED43C718714eb63d5aA57B78B54704E256024E; // USDFI SWAP
 
     address public receiverAddress = 0x32dA3BdB8e0749a66b56344D294C728E0e9a2c03; // PROTOCOL RECEIVER
 
