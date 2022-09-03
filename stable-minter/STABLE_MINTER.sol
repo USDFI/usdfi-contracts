@@ -70,7 +70,7 @@ contract STABLE_MINTER is Pausable, ReentrancyGuard {
             if (stabilityCheck.isStabilityOK() == true) {
                 uint256 i = 0;
                 while (i < receiver.length) {
-                    uint256 bal = checkMining().div(10000).mul(percent[i]);
+                    uint256 bal = checkMining().mul(percent[i]).div(10000);
                     createdTokens = createdTokens.add(bal);
                     STABLE(Token).mint(receiver[i], bal);
                     i += 1;
@@ -78,7 +78,7 @@ contract STABLE_MINTER is Pausable, ReentrancyGuard {
             } else {
                 uint256 i = 0;
                 while (i < receiverPanic.length) {
-                    uint256 bal = checkMining().div(10000).mul(percentPanic[i]);
+                    uint256 bal = checkMining().mul(percentPanic[i]).div(10000);
                     createdTokens = createdTokens.add(bal);
                     STABLE(Token).mint(receiverPanic[i], bal);
                     i += 1;
