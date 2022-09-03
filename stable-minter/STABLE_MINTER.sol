@@ -28,7 +28,7 @@ contract STABLE_MINTER is Pausable, ReentrancyGuard {
     address[] public receiverPanic;
     uint256[] public percentPanic;
 
-    address public Token = 0xE7Df6907120684add86f686E103282Ee5CD17b02;
+    address public constant Token = 0xE7Df6907120684add86f686E103282Ee5CD17b02;
 
     // Statistic
     uint256 public createdTokens;
