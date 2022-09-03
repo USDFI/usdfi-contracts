@@ -39,7 +39,7 @@ contract USDFI_MINTER is Pausable, ReentrancyGuard {
     uint256 public mintingFee = 98000;
 
     // Mint new USDFI about the way "wantToUSDFI"
-    function mintNewUSDFI(uint256 _amount, uint256 _min) public whenNotPaused {
+    function mintNewUSDFI(uint256 _amount, uint256 _min) external whenNotPaused {
         _preCheck(_amount);
 
         _createNewUSDFI(_amount, _min);
