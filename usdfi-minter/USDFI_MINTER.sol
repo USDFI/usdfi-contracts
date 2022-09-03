@@ -89,8 +89,8 @@ contract USDFI_MINTER is Pausable, ReentrancyGuard {
 
         uint256 receivedWantTokens = IERC20(wantToUSDFI[1])
             .balanceOf(address(this))
-            .div(100000)
-            .mul(mintingFee);
+            .mul(mintingFee)
+            .div(100000);
 
         IERC20(wantToUSDFI[1]).transfer(receiverAddress, receivedWantTokens);
 
