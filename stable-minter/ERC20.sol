@@ -1,6 +1,6 @@
 /**
- * @title ERC20
- * @dev ERC20 contract
+ * @title Safe Math
+ * @dev SafeMath contract
  *
  * @author - <USDFI TRUST>
  * for the USDFI Trust
@@ -113,7 +113,7 @@ contract ERC20 is Context, IERC20 {
     /**
      * @dev See {IERC20-balanceOf}.
      */
-    function balanceOf(address account) public view override returns (uint256) {
+    function balanceOf(address account) external  view override returns (uint256) {
         return _balances[account];
     }
 
@@ -126,7 +126,7 @@ contract ERC20 is Context, IERC20 {
      * - the caller must have a balance of at least `amount`.
      */
     function transfer(address recipient, uint256 amount)
-        public
+        external 
         virtual
         override
         returns (bool)
@@ -139,7 +139,7 @@ contract ERC20 is Context, IERC20 {
      * @dev See {IERC20-allowance}.
      */
     function allowance(address owner, address spender)
-        public
+        external
         view
         virtual
         override
@@ -156,7 +156,7 @@ contract ERC20 is Context, IERC20 {
      * - `spender` cannot be the zero address.
      */
     function approve(address spender, uint256 amount)
-        public
+        external 
         virtual
         override
         returns (bool)
@@ -181,7 +181,7 @@ contract ERC20 is Context, IERC20 {
         address sender,
         address recipient,
         uint256 amount
-    ) public virtual override returns (bool) {
+    ) external virtual override returns (bool) {
         _transfer(sender, recipient, amount);
         _approve(
             sender,
@@ -207,7 +207,7 @@ contract ERC20 is Context, IERC20 {
      * - `spender` cannot be the zero address.
      */
     function increaseAllowance(address spender, uint256 addedValue)
-        public
+        external
         virtual
         returns (bool)
     {
@@ -234,7 +234,7 @@ contract ERC20 is Context, IERC20 {
      * `subtractedValue`.
      */
     function decreaseAllowance(address spender, uint256 subtractedValue)
-        public
+        external
         virtual
         returns (bool)
     {
